@@ -20,23 +20,33 @@ version is now anti-reference, not a hybrid to partially keep.
 
 ## Color
 
-Strategy: Single accent. One warm accent ink, `--ember`, used only for the
-day's `destaque_do_dia` band, the active-nav underline is monochrome (not
-ember) so ember stays reserved for two things: the rare-day signal and link
-hover. No per-category colors — the 12 categories differentiate by a
+Strategy: Single accent. One accent ink, `--accent`, used only for the
+day's `destaque_do_dia` band and link/hover states — the active-nav
+underline is monochrome (not accent) so accent stays reserved for those two
+things. No per-category colors — the 12 categories differentiate by a
 numbered mono index and position, not hue. This directly answers the
 "5 random colors fighting for attention" complaint.
 
-Everything else is paper + ink: `--paper`/`--paper-raised` for surface,
-`--ink`/`--ink-soft`/`--ink-faint` for a three-step text hierarchy (title /
-body / meta), `--rule`/`--rule-strong` for hairline dividers. No grid
-texture, no decorative background — flat paper.
+Second pass on the accent itself: the first pass used a warm terracotta
+(`#b5501c`, then literally named `--ember`). The person using it said it
+still read as "muito feitas" and asked for something that reads as modern
+AI-product, not warm/analog. Replaced with a cool blue-violet — closer to
+what current AI-product chrome (Anthropic, OpenAI, Vercel) actually uses —
+paired with a cooler, less-cream paper than before. Picked a specific,
+saturated blue-violet (`#4b4fe0` / `#8489ff`) rather than a default
+Tailwind/shadcn indigo, since that flat "indigo-on-white SaaS" look is
+itself a well-known AI-generated-UI cliché.
 
-Light: paper `#f7f3ea`, ink `#211c14`, ember `#b5501c`.
-Dark: paper `#16130e`, ink `#f3ece0`, ember `#e2913f`.
+Everything else is still paper + ink: `--paper`/`--paper-raised` for
+surface, `--ink`/`--ink-soft`/`--ink-faint` for a three-step text hierarchy
+(title / body / meta), `--rule`/`--rule-strong` for hairline dividers. No
+grid texture, no decorative background — flat paper.
+
+Light: paper `#f6f7fb`, ink `#14151f`, accent `#4b4fe0`.
+Dark: paper `#0a0b10`, ink `#eef0fa`, accent `#8489ff`.
 All body/meta text pairings verified ≥4.5:1 against paper in both themes
-(`--ink-faint` measures 5.49:1 light / 5.01:1 dark; `--ember` 4.59:1 light /
-7.37:1 dark).
+(`--ink-faint` measures 4.89:1 light / 5.49:1 dark; `--accent` 5.61:1 light
+/ 6.56:1 dark).
 
 ## Type
 
@@ -55,7 +65,7 @@ All body/meta text pairings verified ≥4.5:1 against paper in both themes
   the compass mark from the previous world is gone), nav underlines the
   active page, theme toggle is a small bordered pill with a CSS dot
   (filled = light, hollow = dark), no icon glyph.
-- **Masthead**: meta line (date, item/section count) → ember band (notable
+- **Masthead**: meta line (date, item/section count) → accent band (notable
   day only) → serif h1 nameplate → lead paragraph in a ruled blockquote
   style.
 - **Sumário rail**: desktop-only (`min-width: 1024px`), sticky, numbered
@@ -70,7 +80,7 @@ All body/meta text pairings verified ≥4.5:1 against paper in both themes
 - **Item relevância alta**: no icon. A small ink-bordered circle with a
   filled dot, placed before the item (not inside the heading), plus a
   hairline left border on the item block. Fully monochrome — solves the
-  earlier "one glyph, two meanings" problem (day-rarity now uses the ember
+  earlier "one glyph, two meanings" problem (day-rarity now uses the accent
   band exclusively; item-relevance now uses no color and no glyph shared
   with anything else).
 - **Glossary chip / terms box**: unchanged structurally, restyled to the

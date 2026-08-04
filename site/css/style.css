@@ -3,24 +3,25 @@
 /*
   EDITORIAL BRIEFING — Radar IA
   World: a daily printed briefing / morning newsletter, not a dashboard,
-  not a field log. One nameplate, one accent ink ("ember"), numbered
-  sections read top to bottom with a single rest-stop at the midpoint.
-  Relevance is conveyed by weight and a plain mark, never by a second
-  color competing with the accent.
+  not a field log. One nameplate, one accent ink (cool blue-violet, not
+  the warm tone of the first pass), numbered sections read top to bottom
+  with a single rest-stop at the midpoint. Relevance is conveyed by
+  weight and a plain mark, never by a second color competing with the
+  accent.
 */
 
 :root {
-  --paper: #f7f3ea;
-  --paper-raised: #f1ead9;
-  --ink: #211c14;
-  --ink-soft: #42392c;
-  --ink-faint: #6b6152;
-  --rule: #e2d9c7;
-  --rule-strong: #c7bb9f;
-  --ember: #b5501c;
-  --ember-soft: rgba(181, 80, 28, 0.1);
+  --paper: #f6f7fb;
+  --paper-raised: #ececf5;
+  --ink: #14151f;
+  --ink-soft: #43465a;
+  --ink-faint: #686b82;
+  --rule: #e0e2ee;
+  --rule-strong: #c1c4dc;
+  --accent: #4b4fe0;
+  --accent-soft: rgba(75, 79, 224, 0.08);
 
-  --shadow-card: 0 1px 0 rgba(33, 28, 20, 0.04);
+  --shadow-card: 0 1px 0 rgba(20, 21, 31, 0.04);
   --radius: 3px;
   --font-display: "Newsreader", Georgia, "Times New Roman", serif;
   --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
@@ -28,28 +29,28 @@
 }
 
 :root[data-theme="dark"] {
-  --paper: #16130e;
-  --paper-raised: #1d1810;
-  --ink: #f3ece0;
-  --ink-soft: #cabfa9;
-  --ink-faint: #8f846c;
-  --rule: #2e281d;
-  --rule-strong: #443c2a;
-  --ember: #e2913f;
-  --ember-soft: rgba(226, 145, 63, 0.14);
+  --paper: #0a0b10;
+  --paper-raised: #14151f;
+  --ink: #eef0fa;
+  --ink-soft: #b4b7ce;
+  --ink-faint: #83869d;
+  --rule: #202233;
+  --rule-strong: #34374c;
+  --accent: #8489ff;
+  --accent-soft: rgba(132, 137, 255, 0.14);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #16130e;
-    --paper-raised: #1d1810;
-    --ink: #f3ece0;
-    --ink-soft: #cabfa9;
-    --ink-faint: #8f846c;
-    --rule: #2e281d;
-    --rule-strong: #443c2a;
-    --ember: #e2913f;
-    --ember-soft: rgba(226, 145, 63, 0.14);
+    --paper: #0a0b10;
+    --paper-raised: #14151f;
+    --ink: #eef0fa;
+    --ink-soft: #b4b7ce;
+    --ink-faint: #83869d;
+    --rule: #202233;
+    --rule-strong: #34374c;
+    --accent: #8489ff;
+    --accent-soft: rgba(132, 137, 255, 0.14);
   }
 }
 
@@ -131,7 +132,7 @@ header.site-header {
   color: var(--ink-faint);
   transition: color 0.15s ease;
 }
-.brand:hover .brand-mark { color: var(--ember); }
+.brand:hover .brand-mark { color: var(--accent); }
 
 nav.site-nav {
   display: flex;
@@ -231,19 +232,19 @@ nav.site-nav a.active {
 .meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .meta-row .label { color: var(--ink-faint); }
 
-.ember-band {
+.accent-band {
   margin-top: 22px;
   padding: 10px 16px;
-  border: 1px solid var(--ember);
+  border: 1px solid var(--accent);
   border-radius: var(--radius);
-  background: var(--ember-soft);
+  background: var(--accent-soft);
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 6px 12px;
 }
-.ember-band .label { color: var(--ember); }
-.ember-band-text { font-size: 0.92rem; color: var(--ink-soft); }
+.accent-band .label { color: var(--accent); }
+.accent-band-text { font-size: 0.92rem; color: var(--ink-soft); }
 
 .display-h1 {
   margin: 26px 0 0;
@@ -427,7 +428,7 @@ nav.site-nav a.active {
   color: var(--ink);
   transition: color 0.15s ease;
 }
-.deepen-box a:hover { color: var(--ember); }
+.deepen-box a:hover { color: var(--accent); }
 .deepen-box .title { font-family: var(--font-display); font-size: 1.15rem; }
 
 /* ---------- Histórico ---------- */
@@ -446,7 +447,7 @@ nav.site-nav a.active {
 .history-item:hover .history-summary { color: var(--ink); }
 .date-row { display: flex; flex-direction: column; gap: 6px; }
 .history-item .day-date { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-faint); }
-.history-item .badge { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ember); }
+.history-item .badge { font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
 .history-summary { margin: 0; font-size: 0.98rem; line-height: 1.6; color: var(--ink-soft); transition: color 0.15s ease; }
 
 /* ---------- Glossário ---------- */
@@ -462,7 +463,7 @@ nav.site-nav a.active {
   background: var(--paper-raised);
   color: var(--ink);
 }
-.search-field input:focus { outline: 2px solid var(--ember); outline-offset: 1px; }
+.search-field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
 
 .glossario-list { margin: 34px 0 0; }
 .glossario-list dt {
@@ -518,7 +519,7 @@ nav.site-nav a.active {
   pointer-events: none;
 }
 .category-head h2 a { color: inherit; text-decoration: none; }
-.category-head h2 a:hover { color: var(--ember); }
+.category-head h2 a:hover { color: var(--accent); }
 
 .state-msg {
   color: var(--ink-faint);

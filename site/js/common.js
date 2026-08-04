@@ -78,8 +78,8 @@ function populatedCategories(secoes) {
 function renderMasthead(day) {
   const cats = populatedCategories(day.secoes || {});
   const totalItens = cats.reduce((n, c) => n + c.items.length, 0);
-  const emberBand = day.destaque_do_dia
-    ? `<div class="ember-band"><span class="label">Avistamento raro</span><span class="ember-band-text">dia raro — vale ler inteiro, não só o resumo</span></div>`
+  const accentBand = day.destaque_do_dia
+    ? `<div class="accent-band"><span class="label">Avistamento raro</span><span class="accent-band-text">dia raro — vale ler inteiro, não só o resumo</span></div>`
     : "";
   return `
     <header class="masthead">
@@ -87,7 +87,7 @@ function renderMasthead(day) {
         <span class="label">${fmtDateLonga(day.data)}</span>
         <span class="label">${totalItens} itens · ${cats.length} seções</span>
       </div>
-      ${emberBand}
+      ${accentBand}
       <h1 class="display-h1">O dia em <em>inteligência artificial</em></h1>
       <p class="lead">${escapeHtml(day.resumo)}</p>
     </header>
