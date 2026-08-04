@@ -36,6 +36,8 @@ const ICONS = {
     '<line x1="4" y1="12" x2="18.5" y2="12"/><polyline points="13,6.8 18.5,12 13,17.2"/>',
   flag:
     '<line x1="6" y1="3" x2="6" y2="21"/><path d="M6 4.2h11.5l-2.7 4 2.7 4H6"/>',
+  sighting:
+    '<circle cx="8.4" cy="16.2" r="3.2"/><circle cx="15.6" cy="16.2" r="3.2"/><path d="M9.9 13.4c.3-2.7.8-5.4 1.3-6.5a1 1 0 0 1 1.8 0c.5 1.1 1 3.8 1.3 6.5"/>',
   chevronRight:
     '<polyline points="9,5 16,12 9,19"/>',
   compass:

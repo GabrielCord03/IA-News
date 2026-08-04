@@ -36,7 +36,7 @@ Ou seja: **Hermes = fonte de dados. Site/backend = camada de visualização, fei
 - **Priorizar qualidade sobre quantidade**: preferir 8 a 12 itens realmente relevantes e bem explicados do que uma lista enorme e rasa.
 - **Contextualizar por que aquilo importa**: não só "o que aconteceu", mas "por que devo me importar com isso".
 - **Evitar hype vazio**: separar o que é realmente relevante do que é apenas ruído/marketing.
-- **Citar as fontes** (links) para eu poder aprofundar se quiser.
+- **Citar as fontes** (links) para eu poder aprofundar se quiser. **Regra crítica: toda fonte deve ser uma URL específica que aponte direto pro artigo/post/repo/paper — nunca uma homepage genérica** (ex: proibido `https://blog.google/`, `https://reuters.com/technology`, `https://arxiv.org/`, `https://github.com/`, `https://cursor.sh/` sem caminho completo). Se não achar a URL exata, descartar o item em vez de usar link genérico como fallback.
 
 ## Formato de saída: dados estruturados (JSON)
 Em vez de gerar um documento visual, o Hermes deve gerar **dados estruturados em JSON**, prontos para serem consumidos por qualquer site/backend/app no futuro, sem precisar reprocessar texto.
@@ -171,6 +171,14 @@ Com o acúmulo desses documentos diários, construir gradualmente meu domínio s
 - **Cobertura de X/Twitter e LinkedIn na seção `discussoes`**: essas plataformas têm bloqueio anti-bot forte e são difíceis de raspar com ferramentas de busca genéricas (o conteúdo indexado é parcial — perde-se thread completo, engajamento, replies). Reddit e Hacker News, por outro lado, já vêm funcionando bem sem ferramenta extra.
   - Se, depois de 1-2 semanas de execução diária, a seção `discussoes` vier consistentemente vazia ou fraca especificamente em conteúdo de X/Twitter/LinkedIn, avaliar uma integração dedicada (ex: Bright Data, ou APIs oficiais das próprias plataformas) **só para esse ponto**, em vez de substituir toda a base de pesquisa atual.
   - Motivo de não integrar de cara: custo recorrente, API key extra para gerenciar, complexidade adicional — vale a pena só se o gap se confirmar como recorrente e real, não hipotético.
+
+## Teste A/B de modelo do cron job (custo x qualidade)
+- **02/08/2026**: rodou com Claude Sonnet 5 (modelo padrão da sessão) — qualidade alta, fontes específicas e verificáveis, boa distribuição de itens por categoria.
+- **03/08/2026**: trocado para `google/gemini-3.1-flash-lite-20260507` (provider `nous`) visando reduzir custo — qualidade caiu: várias fontes viraram homepages genéricas (`blog.google/`, `arxiv.org/`, `github.com/` sem path), e várias categorias ficaram com só 1 item. Causa provável: modelo mais fraco fazendo menos esforço de busca real.
+  - Corrigido no prompt do cron: regra explícita proibindo URL de fonte sem path específico (descartar item em vez de usar link genérico).
+- **04/08/2026 (planejado)**: trocar para `google/gemini-3.1-flash-20260519` (Flash "cheio", sem Lite) e revisar qualidade.
+- **05/08/2026 (planejado)**: trocar para DeepSeek V4 Flash 0731 (`deepseek/deepseek-v4-flash-20260731`, extremamente barato: $0.01/$0.02 por 1M tokens, e testado com bom desempenho em benchmarks de agente) e revisar qualidade.
+- **Depois dos 3 testes**: comparar custo x qualidade das fontes/itens entre Sonnet 5, Gemini 3.1 Flash e DeepSeek V4 Flash 0731, e fixar o vencedor como modelo definitivo do job (via `hermes cron edit 41366dbb1909 --model ... --provider ...`).
 
 ## Regras técnicas para os arquivos JSON
 - Sempre **JSON válido** (o Hermes deve validar antes de salvar, para não quebrar o consumo posterior por um site/API).

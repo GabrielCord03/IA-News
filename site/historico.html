@@ -42,7 +42,7 @@
       const items = sorted
         .map((d) => {
           const badge = d.destaque_do_dia
-            ? `<span class="badge">${svgIcon("flag", 12)}Raro</span>`
+            ? `<span class="badge">${svgIcon("sighting", 12)}Avistamento raro</span>`
             : "";
           return `
             <li><a class="history-item" href="dia.html?data=${encodeURIComponent(d.data)}">

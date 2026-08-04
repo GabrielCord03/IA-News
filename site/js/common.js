@@ -63,7 +63,7 @@ function initTheme() {
 
 function renderDaySummary(day) {
   const badge = day.destaque_do_dia
-    ? `<span class="badge">${svgIcon("flag", 13)}Avistamento raro</span>`
+    ? `<span class="badge">${svgIcon("sighting", 13)}Avistamento raro</span>`
     : "";
   return `
     <div class="day-summary">
