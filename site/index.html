@@ -9,25 +9,23 @@
 </head>
 <body>
 <header class="site-header">
-  <div class="inner">
+  <div class="header-inner">
     <a class="brand" href="index.html">
-      <svg class="icon mark" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M15.3 8.7l-2.2 5-5 2.2 2.2-5 5-2.2Z"/></svg>
-      Radar IA
+      <span class="brand-word">Radar</span><span class="brand-mark label">IA</span>
     </a>
     <nav class="site-nav">
       <a href="index.html" class="active">Hoje</a>
       <a href="historico.html">Histórico</a>
       <a href="categoria.html">Categorias</a>
       <a href="glossario.html">Glossário</a>
-      <button id="theme-toggle" type="button"></button>
     </nav>
+    <button id="theme-toggle" type="button"></button>
   </div>
 </header>
 <main class="wrap">
   <div id="content"><p class="state-msg">Carregando registro do dia…</p></div>
-  <footer class="site-footer">Radar IA — diário de campo, atualizado por Hermes.</footer>
+  <footer class="site-footer">Radar IA — briefing diário, atualizado por Hermes.</footer>
 </main>
-<script src="js/icons.js"></script>
 <script src="js/common.js"></script>
 <script>
   initTheme();
@@ -41,8 +39,8 @@
       const latest = days.reduce((a, b) => (a.data > b.data ? a : b));
       return fetchJson(`../data/${latest.data}.json`).then((day) => renderDigest(day, content));
     })
-    .catch((err) => {
-      content.innerHTML = `<p class="state-msg">Erro ao carregar dados: ${escapeHtml(err.message)}</p>`;
+    .catch(() => {
+      content.innerHTML = '<p class="state-msg">Não foi possível carregar o registro de hoje. Tente recarregar a página.</p>';
     });
 </script>
 </body>

@@ -8,26 +8,24 @@
 </head>
 <body>
 <header class="site-header">
-  <div class="inner">
+  <div class="header-inner">
     <a class="brand" href="index.html">
-      <svg class="icon mark" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M15.3 8.7l-2.2 5-5 2.2 2.2-5 5-2.2Z"/></svg>
-      Radar IA
+      <span class="brand-word">Radar</span><span class="brand-mark label">IA</span>
     </a>
     <nav class="site-nav">
       <a href="index.html">Hoje</a>
       <a href="historico.html" class="active">Histórico</a>
       <a href="categoria.html">Categorias</a>
       <a href="glossario.html">Glossário</a>
-      <button id="theme-toggle" type="button"></button>
     </nav>
+    <button id="theme-toggle" type="button"></button>
   </div>
 </header>
 <main class="wrap">
   <h1 class="page-title">Histórico</h1>
-  <div id="content"><p class="state-msg">Carregando cadernos anteriores…</p></div>
-  <footer class="site-footer">Radar IA — diário de campo, atualizado por Hermes.</footer>
+  <div id="content"><p class="state-msg">Carregando edições anteriores…</p></div>
+  <footer class="site-footer">Radar IA — briefing diário, atualizado por Hermes.</footer>
 </main>
-<script src="js/icons.js"></script>
 <script src="js/common.js"></script>
 <script>
   initTheme();
@@ -41,24 +39,22 @@
       const sorted = [...days].sort((a, b) => (a.data < b.data ? 1 : -1));
       const items = sorted
         .map((d) => {
-          const badge = d.destaque_do_dia
-            ? `<span class="badge">${svgIcon("sighting", 12)}Avistamento raro</span>`
-            : "";
+          const badge = d.destaque_do_dia ? `<span class="badge label">Avistamento raro</span>` : "";
           return `
             <li><a class="history-item" href="dia.html?data=${encodeURIComponent(d.data)}">
               <div class="date-row">
                 <span class="day-date">${fmtDate(d.data)}</span>
                 ${badge}
               </div>
-              <p>${escapeHtml(d.resumo)}</p>
+              <p class="history-summary">${escapeHtml(d.resumo)}</p>
             </a></li>
           `;
         })
         .join("");
       content.innerHTML = `<ul class="history-list">${items}</ul>`;
     })
-    .catch((err) => {
-      content.innerHTML = `<p class="state-msg">Erro ao carregar histórico: ${escapeHtml(err.message)}</p>`;
+    .catch(() => {
+      content.innerHTML = '<p class="state-msg">Não foi possível carregar o histórico. Tente recarregar a página.</p>';
     });
 </script>
 </body>

@@ -23,6 +23,14 @@ function fmtDate(iso) {
   return `${d} ${months[parseInt(m, 10) - 1]} ${y}`;
 }
 
+function fmtDateLonga(iso) {
+  const [y, m, d] = iso.split("-");
+  const dias = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
+  const months = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  const dt = new Date(Date.UTC(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10)));
+  return `${dias[dt.getUTCDay()]}, ${parseInt(d, 10)} de ${months[parseInt(m, 10) - 1]} de ${y}`;
+}
+
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
@@ -47,7 +55,7 @@ function initTheme() {
   const render = () => {
     const current = document.documentElement.getAttribute("data-theme");
     const isDark = current === "dark" || (!current && window.matchMedia("(prefers-color-scheme: dark)").matches);
-    btn.innerHTML = svgIcon(isDark ? "sun" : "moon", 17) + `<span>${isDark ? "Dia" : "Vigília"}</span>`;
+    btn.innerHTML = `<span class="toggle-dot${isDark ? "" : " is-filled"}" aria-hidden="true"></span>${isDark ? "Dia" : "Noite"}`;
     btn.setAttribute("aria-label", isDark ? "Mudar para modo dia" : "Mudar para modo noturno");
   };
   render();
@@ -61,71 +69,138 @@ function initTheme() {
   });
 }
 
-function renderDaySummary(day) {
-  const badge = day.destaque_do_dia
-    ? `<span class="badge">${svgIcon("sighting", 13)}Avistamento raro</span>`
+function populatedCategories(secoes) {
+  return SECTIONS
+    .map((meta) => ({ ...meta, items: (secoes && secoes[meta.key]) || [] }))
+    .filter((c) => c.items.length);
+}
+
+function renderMasthead(day) {
+  const cats = populatedCategories(day.secoes || {});
+  const totalItens = cats.reduce((n, c) => n + c.items.length, 0);
+  const emberBand = day.destaque_do_dia
+    ? `<div class="ember-band"><span class="label">Avistamento raro</span><span class="ember-band-text">dia raro — vale ler inteiro, não só o resumo</span></div>`
     : "";
   return `
-    <div class="day-summary">
-      <div class="date-row">
-        <h1 class="day-date"><span class="sr-only">Registro de campo — </span>${fmtDate(day.data)}</h1>
-        ${badge}
+    <header class="masthead">
+      <div class="meta-row">
+        <span class="label">${fmtDateLonga(day.data)}</span>
+        <span class="label">${totalItens} itens · ${cats.length} seções</span>
       </div>
-      <p>${escapeHtml(day.resumo)}</p>
-    </div>
+      ${emberBand}
+      <h1 class="display-h1">O dia em <em>inteligência artificial</em></h1>
+      <p class="lead">${escapeHtml(day.resumo)}</p>
+    </header>
   `;
+}
+
+function renderRail(cats) {
+  if (!cats.length) return "";
+  const items = cats
+    .map((c, i) => `
+      <li>
+        <a href="#${c.key}" class="rail-link" data-rail-for="${c.key}">
+          <span class="mono-index">${String(i + 1).padStart(2, "0")}</span>
+          <span class="rail-label">${escapeHtml(c.label)}</span>
+          <span class="rail-count">${c.items.length}</span>
+        </a>
+      </li>
+    `)
+    .join("");
+  return `
+    <nav class="col-rail" aria-label="Sumário do dia">
+      <p class="label">Sumário</p>
+      <ol class="rail-list">${items}</ol>
+    </nav>
+  `;
+}
+
+function initActiveSection(ids) {
+  if (!ids.length || !("IntersectionObserver" in window)) return;
+  const links = new Map(
+    [...document.querySelectorAll(".rail-link")].map((a) => [a.dataset.railFor, a])
+  );
+  const setActive = (id) => {
+    links.forEach((a, key) => a.classList.toggle("is-active", key === id));
+  };
+  const obs = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (visible) setActive(visible.target.id);
+    },
+    { rootMargin: "-15% 0px -70% 0px", threshold: 0 }
+  );
+  ids.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) obs.observe(el);
+  });
 }
 
 function renderItem(item) {
-  const markNotable = item.relevancia === "alta"
-    ? `<span class="field-mark" title="Achado de destaque">${svgIcon("flag", 12)}</span>`
+  const alta = item.relevancia === "alta";
+  const mark = alta
+    ? `<span class="relevance-mark" aria-label="Relevância alta"><span class="relevance-dot"></span></span>`
     : "";
-  const tipo = item.tipo ? `<span class="tag">${escapeHtml(item.tipo.replace(/_/g, " "))}</span>` : "";
+  const tipo = item.tipo ? `<span class="label">${escapeHtml(item.tipo.replace(/_/g, " "))}</span>` : "";
   const comparados = item.modelos_comparados && item.modelos_comparados.length
-    ? `<p><strong>Modelos:</strong> ${escapeHtml(item.modelos_comparados.join(", "))}</p>` : "";
-  const custoBeneficio = item.custo_beneficio ? `<p><strong>Custo-benefício:</strong> ${escapeHtml(item.custo_beneficio)}</p>` : "";
+    ? `<div class="item-models">${item.modelos_comparados
+        .map((m, i) => `${i > 0 ? '<span class="sep">/</span>' : ""}<span class="model-name">${escapeHtml(m)}</span>`)
+        .join("")}</div>`
+    : "";
+  const custoBeneficio = item.custo_beneficio
+    ? `<p class="item-cb"><span class="label">Custo-benefício</span>${escapeHtml(item.custo_beneficio)}</p>`
+    : "";
+  const extra = comparados || custoBeneficio ? `<div class="item-extra">${comparados}${custoBeneficio}</div>` : "";
   const fonte = item.fonte
-    ? `<a class="source-link" href="${escapeHtml(item.fonte)}" target="_blank" rel="noopener noreferrer">${svgIcon("arrow", 13)}Fonte</a>`
+    ? `<a class="source-link" href="${escapeHtml(item.fonte)}" target="_blank" rel="noopener noreferrer">Fonte ↗</a>`
     : "";
   return `
-    <div class="item">
-      <h3>${markNotable}${escapeHtml(item.titulo)}</h3>
-      ${tipo}
-      <p>${escapeHtml(item.resumo)}</p>
-      ${comparados}
-      ${custoBeneficio}
-      <div class="meta">${fonte}</div>
-    </div>
+    <article class="item-entry${alta ? " item-alta" : ""}">
+      <div>${mark}</div>
+      <div>
+        <div class="item-heading-row">
+          <h3 class="item-title">${escapeHtml(item.titulo)}</h3>
+          ${tipo}
+        </div>
+        <p class="item-summary">${escapeHtml(item.resumo)}</p>
+        ${extra}
+        ${fonte}
+      </div>
+    </article>
   `;
 }
 
-function renderSections(secoes) {
+function renderCategoriesWithPause(cats) {
+  const pauseAt = Math.ceil(cats.length / 2);
   let html = "";
-  for (const meta of SECTIONS) {
-    const items = secoes[meta.key];
-    if (!items || !items.length) continue;
+  cats.forEach((c, i) => {
+    if (i === pauseAt && cats.length > 3) {
+      html += `<div class="pause-divider"><span class="rule-line"></span><span class="label">metade do dia</span><span class="rule-line"></span></div>`;
+    }
     html += `
-      <section class="category" style="--cat-ink: var(--ink-${meta.key})">
+      <section id="${c.key}" class="category-section" style="--i:${i}">
         <div class="category-head">
-          <span class="cat-icon">${svgIcon(meta.key, 19)}</span>
-          <h2>${meta.label}</h2>
-          <span class="cat-count">${items.length}</span>
+          <span class="mono-index">${String(i + 1).padStart(2, "0")}</span>
+          <h2 class="category-title">${escapeHtml(c.label)}</h2>
+          <span class="label cat-count">${c.items.length}</span>
         </div>
-        ${items.map((it) => renderItem(it)).join("")}
+        <div class="item-list">${c.items.map(renderItem).join("")}</div>
       </section>
     `;
-  }
+  });
   return html;
 }
 
 function renderTerms(glossarioDoDia) {
   if (!glossarioDoDia || !glossarioDoDia.length) return "";
   const chips = glossarioDoDia
-    .map((g) => `<a class="chip" href="glossario.html#${slugifyTerm(g.termo)}">${escapeHtml(g.termo)}</a>`)
+    .map((g) => `<a class="chip" href="glossario.html#${slugifyTerm(g.termo)}">${escapeHtml(g.termo)}<span class="arrow">↗</span></a>`)
     .join("");
   return `
     <div class="terms-box">
-      <h2>${svgIcon("book", 17)}Termos do dia</h2>
+      <h2>Termos do dia</h2>
       <div class="chips">${chips}</div>
     </div>
   `;
@@ -134,7 +209,14 @@ function renderTerms(glossarioDoDia) {
 function renderDeepen(paraAprofundar) {
   if (!paraAprofundar || !paraAprofundar.length) return "";
   const items = paraAprofundar
-    .map((p) => `<li><span class="tag">${escapeHtml(p.tipo)}</span> <a href="${escapeHtml(p.link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.titulo)}</a></li>`)
+    .map((p) => `
+      <li>
+        <a href="${escapeHtml(p.link)}" target="_blank" rel="noopener noreferrer">
+          <span class="title">${escapeHtml(p.titulo)}</span>
+          <span class="label">${escapeHtml(p.tipo)}</span>
+        </a>
+      </li>
+    `)
     .join("");
   return `
     <div class="deepen-box">
@@ -145,9 +227,17 @@ function renderDeepen(paraAprofundar) {
 }
 
 function renderDigest(day, container) {
-  container.innerHTML =
-    renderDaySummary(day) +
-    renderTerms(day.glossario_do_dia) +
-    renderSections(day.secoes || {}) +
-    renderDeepen(day.para_aprofundar);
+  const cats = populatedCategories(day.secoes || {});
+  container.innerHTML = `
+    <div class="layout-grid">
+      ${renderRail(cats)}
+      <div class="col-main">
+        ${renderMasthead(day)}
+        ${renderCategoriesWithPause(cats)}
+        ${renderTerms(day.glossario_do_dia)}
+        ${renderDeepen(day.para_aprofundar)}
+      </div>
+    </div>
+  `;
+  initActiveSection(cats.map((c) => c.key));
 }

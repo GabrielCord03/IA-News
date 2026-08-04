@@ -8,18 +8,17 @@
 </head>
 <body>
 <header class="site-header">
-  <div class="inner">
+  <div class="header-inner">
     <a class="brand" href="index.html">
-      <svg class="icon mark" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M15.3 8.7l-2.2 5-5 2.2 2.2-5 5-2.2Z"/></svg>
-      Radar IA
+      <span class="brand-word">Radar</span><span class="brand-mark label">IA</span>
     </a>
     <nav class="site-nav">
       <a href="index.html">Hoje</a>
       <a href="historico.html">Histórico</a>
       <a href="categoria.html" class="active">Categorias</a>
       <a href="glossario.html">Glossário</a>
-      <button id="theme-toggle" type="button"></button>
     </nav>
+    <button id="theme-toggle" type="button"></button>
   </div>
 </header>
 <main class="wrap">
@@ -27,16 +26,13 @@
   <label for="categoria-select" class="select-label">Filtrar por categoria</label>
   <div class="select-wrap">
     <select id="categoria-select"></select>
-    <span class="icon-slot"></span>
   </div>
-  <div id="content"><p class="state-msg">Escolha uma ordem taxonômica.</p></div>
-  <footer class="site-footer">Radar IA — diário de campo, atualizado por Hermes.</footer>
+  <div id="content"><p class="state-msg">Escolha uma categoria.</p></div>
+  <footer class="site-footer">Radar IA — briefing diário, atualizado por Hermes.</footer>
 </main>
-<script src="js/icons.js"></script>
 <script src="js/common.js"></script>
 <script>
   initTheme();
-  document.querySelector(".select-wrap .icon-slot").outerHTML = svgIcon("chevronRight", 15);
   const select = document.getElementById("categoria-select");
   const content = document.getElementById("content");
 
@@ -47,28 +43,36 @@
   if (initialKey && SECTIONS.some((s) => s.key === initialKey)) select.value = initialKey;
 
   let indexDays = null;
+  const dayCache = new Map();
 
   async function loadCategory(key) {
-    content.innerHTML = '<p class="state-msg">Vasculhando cadernos anteriores…</p>';
+    content.innerHTML = '<p class="state-msg">Vasculhando edições anteriores…</p>';
     if (!indexDays) indexDays = await fetchJson("../index.json");
     const sorted = [...indexDays].sort((a, b) => (a.data < b.data ? 1 : -1));
     const dayDatas = await Promise.all(
-      sorted.map((d) => fetchJson(`../data/${d.data}.json`).catch(() => null))
+      sorted.map((d) => {
+        if (dayCache.has(d.data)) return dayCache.get(d.data);
+        const p = fetchJson(`../data/${d.data}.json`).catch(() => null);
+        dayCache.set(d.data, p);
+        return p;
+      })
     );
     const meta = sectionMeta(key);
     let html = "";
+    let i = 0;
     for (const day of dayDatas) {
       if (!day) continue;
       const items = day.secoes && day.secoes[key];
       if (!items || !items.length) continue;
+      i += 1;
       html += `
-        <section class="category" style="--cat-ink: var(--ink-${key})">
+        <section class="category-section">
           <div class="category-head">
-            <span class="cat-icon">${svgIcon(key, 19)}</span>
-            <h2><a href="dia.html?data=${encodeURIComponent(day.data)}">${fmtDate(day.data)}</a></h2>
-            <span class="cat-count">${items.length}</span>
+            <span class="mono-index">${String(i).padStart(2, "0")}</span>
+            <h2 class="category-title"><a href="dia.html?data=${encodeURIComponent(day.data)}">${fmtDate(day.data)}</a></h2>
+            <span class="label cat-count">${items.length}</span>
           </div>
-          ${items.map((it) => renderItem(it)).join("")}
+          <div class="item-list">${items.map((it) => renderItem(it)).join("")}</div>
         </section>
       `;
     }

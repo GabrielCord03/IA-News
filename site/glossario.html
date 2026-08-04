@@ -8,35 +8,31 @@
 </head>
 <body>
 <header class="site-header">
-  <div class="inner">
+  <div class="header-inner">
     <a class="brand" href="index.html">
-      <svg class="icon mark" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M15.3 8.7l-2.2 5-5 2.2 2.2-5 5-2.2Z"/></svg>
-      Radar IA
+      <span class="brand-word">Radar</span><span class="brand-mark label">IA</span>
     </a>
     <nav class="site-nav">
       <a href="index.html">Hoje</a>
       <a href="historico.html">Histórico</a>
       <a href="categoria.html">Categorias</a>
       <a href="glossario.html" class="active">Glossário</a>
-      <button id="theme-toggle" type="button"></button>
     </nav>
+    <button id="theme-toggle" type="button"></button>
   </div>
 </header>
 <main class="wrap">
   <h1 class="page-title">Glossário</h1>
   <div class="search-field">
     <label for="glossario-search" class="sr-only">Buscar termo no glossário</label>
-    <span class="icon-slot"></span>
     <input id="glossario-search" type="search" placeholder="Buscar termo…" autocomplete="off" />
   </div>
-  <dl class="glossario-list" id="content"><p class="state-msg">Carregando catálogo de espécimes…</p></dl>
-  <footer class="site-footer">Radar IA — diário de campo, atualizado por Hermes.</footer>
+  <dl class="glossario-list" id="content"><p class="state-msg">Carregando glossário…</p></dl>
+  <footer class="site-footer">Radar IA — briefing diário, atualizado por Hermes.</footer>
 </main>
-<script src="js/icons.js"></script>
 <script src="js/common.js"></script>
 <script>
   initTheme();
-  document.querySelector(".search-field .icon-slot").outerHTML = svgIcon("search", 17);
   const content = document.getElementById("content");
   const search = document.getElementById("glossario-search");
   let terms = [];
@@ -67,8 +63,8 @@
         }, 50);
       }
     })
-    .catch((err) => {
-      content.innerHTML = `<p class="state-msg">Erro ao carregar glossário: ${escapeHtml(err.message)}</p>`;
+    .catch(() => {
+      content.innerHTML = '<p class="state-msg">Não foi possível carregar o glossário. Tente recarregar a página.</p>';
     });
 
   search.addEventListener("input", () => render(search.value));
