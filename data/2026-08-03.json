@@ -1,0 +1,141 @@
+{
+  "data": "2026-08-03",
+  "resumo": "O mercado de IA entra em fase de conformidade forçada com o início da vigência do EU AI Act. Google lança a série Gemma 4, enquanto a comunidade de desenvolvimento prioriza fluxos de trabalho agenticos em vez de apenas prompting manual.",
+  "destaque_do_dia": true,
+  "secoes": {
+    "modelos": [
+      {
+        "titulo": "Série Gemma 4 do Google",
+        "resumo": "Nova família de modelos aberta com variações (até 31B parâmetros), 256K de contexto e suporte multimodal nativo, sob licença Apache 2.0.",
+        "fonte": "https://blog.google/technology/ai/",
+        "relevancia": "alta"
+      },
+      {
+        "titulo": "GLM-5.2 da Zhipu AI",
+        "resumo": "Modelo MoE de 744B parâmetros, focado em código e engenharia, com suporte a 1 milhão de tokens.",
+        "fonte": "https://zhipuai.cn/",
+        "relevancia": "alta"
+      }
+    ],
+    "ferramentas_plugins_mcps": [
+      {
+        "titulo": "Monitoramento de Shadow AI",
+        "resumo": "Novas ferramentas de telemetria surgem para detectar uso de IA não autorizado por funcionários e prevenir vazamento de dados.",
+        "fonte": "https://security.dev/",
+        "relevancia": "média"
+      }
+    ],
+    "open_source": [
+      {
+        "titulo": "nanobot",
+        "resumo": "Agente de IA ultraleve com suporte a MCP, memória e agendamento para uso pessoal.",
+        "fonte": "https://github.com/HKUDS/nanobot",
+        "relevancia": "alta"
+      }
+    ],
+    "discussoes": [
+      {
+        "titulo": "Migração para Agentic Workflows",
+        "resumo": "Desenvolvedores estão abandonando prompts complexos manuais em favor de sistemas recursivos onde o agente avalia e corrige seu próprio código.",
+        "fonte": "https://news.ycombinator.com/",
+        "relevancia": "alta"
+      }
+    ],
+    "papers": [
+      {
+        "titulo": "OpenClaw and Ollama in Agentic AI",
+        "resumo": "Análise sobre a transição de LLMs reativos para sistemas de IA persistentes e orientados a ação.",
+        "fonte": "https://arxiv.org/",
+        "relevancia": "média"
+      }
+    ],
+    "mercado": [
+      {
+        "titulo": "Pressão de Governança nas Gigantes",
+        "resumo": "OpenAI, Anthropic e Google enfrentam pressão crescente para reforçar a segurança laboratorial antes de lançar modelos de fronteira mais potentes.",
+        "fonte": "https://reuters.com/technology",
+        "relevancia": "alta"
+      }
+    ],
+    "regulacao": [
+      {
+        "titulo": "Vigência do EU AI Act",
+        "resumo": "Em 02/08/2026, novas disposições da lei de IA da UE entram em vigor, exigindo transparência estrita de sistemas de alto risco.",
+        "fonte": "https://artificialintelligenceact.eu/",
+        "relevancia": "crítica"
+      }
+    ],
+    "integracoes_novas": [
+      {
+        "titulo": "IA invisível em SaaS",
+        "resumo": "Integração de IA em fluxos de trabalho de CRM e marketing deixa de focar em chats para focar em automação direta de tarefas.",
+        "fonte": "https://techcrunch.com/",
+        "relevancia": "média"
+      }
+    ],
+    "dicas_economia_e_performance": [
+      {
+        "titulo": "Seletividade de Modelos",
+        "resumo": "Use modelos menores para triagem e deixe modelos potentes (Claude 3.5, etc) para a fase de raciocínio crítico.",
+        "tipo": "economia_dinheiro",
+        "fonte": "https://blog.artificialanalysis.ai/"
+      },
+      {
+        "titulo": "Knowledge Graph Local",
+        "resumo": "Construir grafos de conhecimento do seu próprio código reduz a necessidade de enviar o repositório inteiro via prompt.",
+        "tipo": "economia_tokens",
+        "fonte": "https://github.com/topics/knowledge-graph"
+      }
+    ],
+    "dicas_programadores": [
+      {
+        "titulo": "Claude Code vs. Cursor",
+        "resumo": "Use Cursor para iteração rápida e Claude Code via CLI para tarefas de refatoração autônoma de baixo nível.",
+        "fonte": "https://cursor.sh/"
+      },
+      {
+        "titulo": "Git Worktrees",
+        "resumo": "Melhora a organização ao trabalhar em múltiplos ramos em paralelo, facilitando a vida de agentes autônomos.",
+        "fonte": "https://git-scm.com/"
+      }
+    ],
+    "delphi_e_ia": [
+      {
+        "titulo": "CodeDroidAI e Modernização",
+        "resumo": "Ferramentas focadas em Object Pascal estão evoluindo para ajudar na tradução de sistemas legados para padrões modernos.",
+        "fonte": "https://embarcadero.com/"
+      }
+    ],
+    "comparativos_modelos": [
+      {
+        "titulo": "Eficiência MoE vs Modelos Densos",
+        "resumo": "Modelos MoE oferecem melhor custo-benefício para inferência em produção, equilibrando performance de ponta com menor consumo computacional.",
+        "modelos_comparados": ["Gemma 4 26B (MoE)", "Modelos Densos 700B+"],
+        "custo_beneficio": "MoE é preferível para serviços de larga escala.",
+        "fonte": "https://artificialanalysis.ai/",
+        "relevancia": "alta"
+      }
+    ]
+  },
+  "glossario_do_dia": [
+    {
+      "termo": "Agentic Workflow",
+      "explicacao": "Sistema de IA que não apenas responde a um comando, mas executa uma série de ações, revisa seus resultados e corrige seus erros de forma recursiva."
+    },
+    {
+      "termo": "Shadow AI",
+      "explicacao": "Uso de ferramentas de inteligência artificial por funcionários dentro de uma empresa sem o conhecimento ou aprovação dos departamentos de TI e segurança."
+    },
+    {
+      "termo": "EU AI Act",
+      "explicacao": "Legislação abrangente da União Europeia que regula o desenvolvimento e uso de IA, focando especialmente em sistemas de 'alto risco' e transparência."
+    }
+  ],
+  "para_aprofundar": [
+    {
+      "titulo": "Guia oficial do EU AI Act",
+      "tipo": "artigo",
+      "link": "https://artificialintelligenceact.eu/"
+    }
+  ]
+}

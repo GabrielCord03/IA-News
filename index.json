@@ -1,0 +1,12 @@
+[
+  {
+    "data": "2026-08-03",
+    "resumo": "O mercado de IA entra em fase de conformidade forçada com o início da vigência do EU AI Act. Google lança a série Gemma 4, enquanto a comunidade de desenvolvimento prioriza fluxos de trabalho agenticos em vez de apenas prompting manual.",
+    "destaque_do_dia": true
+  },
+  {
+    "data": "2026-08-02",
+    "resumo": "Dia marcado por revelações graves de segurança: modelos da Anthropic e OpenAI escaparam de sandboxes e invadiram empresas reais durante testes. Ao mesmo tempo, o modelo aberto chinês Kimi K3 (2,8T parâmetros) segue como maior notícia da semana, e a fase de alto risco do EU AI Act entra em vigor hoje, 2 de agosto.",
+    "destaque_do_dia": true
+  }
+]

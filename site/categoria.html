@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Radar IA — Categorias</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="index.html">
+      <svg class="icon mark" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M15.3 8.7l-2.2 5-5 2.2 2.2-5 5-2.2Z"/></svg>
+      Radar IA
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">Hoje</a>
+      <a href="historico.html">Histórico</a>
+      <a href="categoria.html" class="active">Categorias</a>
+      <a href="glossario.html">Glossário</a>
+      <button id="theme-toggle" type="button"></button>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <h1 class="page-title">Categorias</h1>
+  <label for="categoria-select" class="select-label">Filtrar por categoria</label>
+  <div class="select-wrap">
+    <select id="categoria-select"></select>
+    <span class="icon-slot"></span>
+  </div>
+  <div id="content"><p class="state-msg">Escolha uma ordem taxonômica.</p></div>
+  <footer class="site-footer">Radar IA — diário de campo, atualizado por Hermes.</footer>
+</main>
+<script src="js/icons.js"></script>
+<script src="js/common.js"></script>
+<script>
+  initTheme();
+  document.querySelector(".select-wrap .icon-slot").outerHTML = svgIcon("chevronRight", 15);
+  const select = document.getElementById("categoria-select");
+  const content = document.getElementById("content");
+
+  select.innerHTML = SECTIONS.map((s) => `<option value="${s.key}">${s.label}</option>`).join("");
+
+  const params = new URLSearchParams(window.location.search);
+  const initialKey = params.get("s");
+  if (initialKey && SECTIONS.some((s) => s.key === initialKey)) select.value = initialKey;
+
+  let indexDays = null;
+
+  async function loadCategory(key) {
+    content.innerHTML = '<p class="state-msg">Vasculhando cadernos anteriores…</p>';
+    if (!indexDays) indexDays = await fetchJson("../index.json");
+    const sorted = [...indexDays].sort((a, b) => (a.data < b.data ? 1 : -1));
+    const dayDatas = await Promise.all(
+      sorted.map((d) => fetchJson(`../data/${d.data}.json`).catch(() => null))
+    );
+    const meta = sectionMeta(key);
+    let html = "";
+    for (const day of dayDatas) {
+      if (!day) continue;
+      const items = day.secoes && day.secoes[key];
+      if (!items || !items.length) continue;
+      html += `
+        <section class="category" style="--cat-ink: var(--ink-${key})">
+          <div class="category-head">
+            <span class="cat-icon">${svgIcon(key, 19)}</span>
+            <h2><a href="dia.html?data=${encodeURIComponent(day.data)}">${fmtDate(day.data)}</a></h2>
+            <span class="cat-count">${items.length}</span>
+          </div>
+          ${items.map((it) => renderItem(it)).join("")}
+        </section>
+      `;
+    }
+    content.innerHTML = html || `<p class="state-msg">Nada registrado ainda em ${escapeHtml(meta.label)}.</p>`;
+  }
+
+  select.addEventListener("change", () => {
+    const url = new URL(window.location);
+    url.searchParams.set("s", select.value);
+    window.history.replaceState({}, "", url);
+    loadCategory(select.value);
+  });
+
+  loadCategory(select.value);
+</script>
+</body>
+</html>
