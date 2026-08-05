@@ -115,7 +115,7 @@
       {
         "titulo": "Portal Oficial e Documentação do EU AI Act",
         "resumo": "Disponibilização do portal centralizado com toda a documentação, guias de conformidade e o texto consolidado da Lei de Inteligência Artificial da União Europeia (EU AI Act). O site serve de base para empresas globais consultarem os prazos legais de conformidade que se estendem de agosto de 2026 a 2028, dependendo da classificação de risco do sistema de IA.",
-        "fonte": "https://artificialintelligenceact.eu/",
+        "fonte": "https://artificialintelligenceact.eu/the-act/",
         "relevancia": "alta"
       }
     ],
@@ -273,7 +273,7 @@
     {
       "titulo": "The EU Artificial Intelligence Act Official Portal",
       "tipo": "documentação",
-      "link": "https://artificialintelligenceact.eu/"
+      "link": "https://artificialintelligenceact.eu/the-act/"
     },
     {
       "titulo": "NVIDIA releases new physical AI models as global partners unveil next-generation robots",
