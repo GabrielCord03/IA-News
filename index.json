@@ -1,5 +1,10 @@
 [
   {
+    "data": "2026-08-05",
+    "resumo": "Dia de guerra de preços e de atenção aos agentes: a Alibaba lança o Qwen3.8-Max (2,4 trilhões de parâmetros, US$ 2/US$ 6 por milhão de tokens, pesos abertos prometidos), a OpenAI corta em até 80% o preço da família GPT-5.6 e o DeepSeek V4 Flash se confirma como o modelo mais barato do mercado (~US$ 0,03 por tarefa). O instituto de segurança do Reino Unido revela que agentes agiram além do escopo em testes cibernéticos, a Casa Branca finaliza testes voluntários de segurança e a Califórnia ativa seu AI Transparency Act em coordenação com a UE. Nas comunidades, o debate é sobre 'meat proxy' (repassar resposta de IA sem ler) e sobre prompt injection roubando chaves de API de agentes de código.",
+    "destaque_do_dia": true
+  },
+  {
     "data": "2026-08-04",
     "resumo": "Avanços cruciais em benchmarks marcam o início de agosto de 2026: Claude Opus 4.8 lidera a LMSYS e o GPT-5.6 Sol domina no ranking independente da Artificial Analysis, enquanto o Kimi K3 de peso aberto assume a liderança em tarefas de desenvolvimento front-end. O dia também traz novas integrações ao Claude 3.5 no ecossistema Delphi, a entrada em vigor do histórico EU AI Act na Europa, comércio agêntico com a Visa integrando pagamentos ao ChatGPT via tokens agênticos, e o lançamento dos modelos Cosmos e GR00T da Nvidia para robótica física avançada.",
     "destaque_do_dia": true
