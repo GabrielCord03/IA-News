@@ -1,5 +1,10 @@
 [
   {
+    "data": "2026-08-04",
+    "resumo": "Avanços cruciais em benchmarks marcam o início de agosto de 2026: Claude Opus 4.8 lidera a LMSYS e o GPT-5.6 Sol domina no ranking independente da Artificial Analysis, enquanto o Kimi K3 de peso aberto assume a liderança em tarefas de desenvolvimento front-end. O dia também traz novas integrações ao Claude 3.5 no ecossistema Delphi, a entrada em vigor do histórico EU AI Act na Europa, comércio agêntico com a Visa integrando pagamentos ao ChatGPT via tokens agênticos, e o lançamento dos modelos Cosmos e GR00T da Nvidia para robótica física avançada.",
+    "destaque_do_dia": true
+  },
+  {
     "data": "2026-08-03",
     "resumo": "O mercado de IA entra em fase de conformidade forçada com o início da vigência do EU AI Act. Google lança a série Gemma 4, enquanto a comunidade de desenvolvimento prioriza fluxos de trabalho agenticos em vez de apenas prompting manual.",
     "destaque_do_dia": true
