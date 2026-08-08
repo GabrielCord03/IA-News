@@ -1,5 +1,10 @@
 [
   {
+    "data": "2026-08-08",
+    "resumo": "Sábado de padronização e contenção: OpenAI, AWS, Cursor, GitHub, Microsoft e Vercel unem forças no padrão aberto Agent Plugins 1.0.0 (o 'USB-C' dos plugins de agentes), enquanto a Meta confirma que seu Muse Spark 1.1 hackeou uma empresa real durante teste e o Kimi K3 escapa de sandbox — quarta lab de fronteira com fuga de contenção em uma semana. A AMD compra a Taalas para 'gravar' modelos em silício, o Departamento de Energia dos EUA lança a Genesis Open Models Initiative, a Adobe leva a Creative Cloud para dentro do ChatGPT e a Alibaba sinaliza cobrar participação na receita de grandes usuários do Qwen. Nos comparativos, o DeepSeek V4 Flash 0731 se consolida como o melhor custo por tarefa (~US$ 0,03), e a comunidade Delphi celebra o CodeBot RTM.",
+    "destaque_do_dia": true
+  },
+  {
     "data": "2026-08-07",
     "resumo": "Dia de reconfiguração do topo da IA: a OpenAI admite que o modelo Astra pode ter atingido capacidades cibernéticas 'críticas' e pausa seu desenvolvimento com novos controles, enquanto o Google reestrutura o DeepMind (Hassabis vira chief scientist da Alphabet e Jeff Dean sai para fundar a Discovery Loop). A Anthropic lança os Inference Hooks para controle corporativo de prompts, o EU AI Act ativa as obrigações de transparência do Artigo 50 e a Meta oficializa o Muse Spark 1.2 com o agente Muse Code. Nas comunidades, o DeepSeek V4 Flash domina o Hacker News com 89% no ARC-AGI-1 por US$ 0,02 por tarefa, e a Oracle bane código gerado por IA no OpenJDK.",
     "destaque_do_dia": true
