@@ -85,6 +85,14 @@ All body/meta text pairings verified ≥4.5:1 against paper in both themes
   with anything else).
 - **Glossary chip / terms box**: unchanged structurally, restyled to the
   new tokens; `↗` character replaces the external-link icon.
+- **Mark toggle / Destaques**: every item carries a small bordered pill
+  ("Marcar" / "Marcado") reusing the theme-toggle's dot idiom — hollow
+  ink-faint when off, filled accent when on. State lives in
+  `localStorage` (`radar-ia-destaques`), keyed by `data::categoria::título`
+  with a full snapshot of the item, so the dedicated `destaques.html` page
+  reads and renders straight from storage with no fetch. This is the one
+  client-side write in an otherwise fully read-only site — see
+  PRODUCT.md's Capabilities and Constraints.
 - **Icons**: none. `site/js/icons.js` was deleted along with all `<svg>`
   icon markup — the previous stroke-icon set (12 category glyphs + 7 UI
   icons) is gone. This is intentional restraint, not an oversight: nothing

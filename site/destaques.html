@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Radar IA — Destaques</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-word">Radar</span><span class="brand-mark label">IA</span>
+    </a>
+    <nav class="site-nav">
+      <a href="index.html">Hoje</a>
+      <a href="historico.html">Histórico</a>
+      <a href="categoria.html">Categorias</a>
+      <a href="glossario.html">Glossário</a>
+      <a href="destaques.html" class="active">Destaques</a>
+    </nav>
+    <button id="theme-toggle" type="button"></button>
+  </div>
+</header>
+<main class="wrap">
+  <h1 class="page-title">Destaques</h1>
+  <p class="page-lead">Itens que você marcou como importantes, salvos neste navegador.</p>
+  <div id="content"></div>
+  <footer class="site-footer">Radar IA — briefing diário, atualizado por Hermes.</footer>
+</main>
+<script src="js/common.js"></script>
+<script>
+  initTheme();
+  const content = document.getElementById("content");
+
+  function renderDestaqueItem(key, entry) {
+    const fonte = entry.item && entry.item.fonte
+      ? `<a class="source-link" href="${escapeHtml(entry.item.fonte)}" target="_blank" rel="noopener noreferrer">Fonte ↗</a>`
+      : "";
+    return `
+      <article class="destaque-item" data-key="${escapeHtml(key)}">
+        <div class="destaque-meta">
+          <a class="label" href="dia.html?data=${encodeURIComponent(entry.data)}">${fmtDate(entry.data)}</a>
+          <span class="label">${escapeHtml(entry.catLabel)}</span>
+          <button type="button" class="mark-toggle" data-key="${escapeHtml(key)}" aria-pressed="true" aria-label="Remover destaque">
+            <span class="mark-dot" aria-hidden="true"></span>Marcado
+          </button>
+        </div>
+        <h3 class="item-title">${escapeHtml(entry.item.titulo)}</h3>
+        <p class="item-summary">${escapeHtml(entry.item.resumo)}</p>
+        ${fonte}
+      </article>
+    `;
+  }
+
+  function render() {
+    const map = getHighlights();
+    const entries = Object.entries(map).sort((a, b) => (b[1].savedAt || 0) - (a[1].savedAt || 0));
+    if (!entries.length) {
+      content.innerHTML = '<p class="state-msg">Nada marcado ainda. Marque um item em "Hoje", "Histórico" ou "Categorias" pra vê-lo aqui.</p>';
+      return;
+    }
+    content.innerHTML = `<div class="destaque-list">${entries.map(([key, entry]) => renderDestaqueItem(key, entry)).join("")}</div>`;
+    initMarkToggles(content, (key, nowMarked) => {
+      if (!nowMarked) {
+        const el = content.querySelector(`.destaque-item[data-key="${CSS.escape(key)}"]`);
+        if (el) el.remove();
+        if (!content.querySelector(".destaque-item")) render();
+      }
+    });
+  }
+
+  render();
+</script>
+</body>
+</html>

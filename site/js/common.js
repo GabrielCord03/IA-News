@@ -69,6 +69,67 @@ function initTheme() {
   });
 }
 
+const HIGHLIGHTS_KEY = "radar-ia-destaques";
+
+function getHighlights() {
+  try {
+    return JSON.parse(localStorage.getItem(HIGHLIGHTS_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveHighlights(map) {
+  localStorage.setItem(HIGHLIGHTS_KEY, JSON.stringify(map));
+}
+
+function highlightKey(data, catKey, titulo) {
+  return `${data}::${catKey}::${titulo}`;
+}
+
+function isHighlighted(key) {
+  return Object.prototype.hasOwnProperty.call(getHighlights(), key);
+}
+
+function toggleHighlight(key, payload) {
+  const map = getHighlights();
+  if (map[key]) {
+    delete map[key];
+  } else {
+    map[key] = { ...payload, savedAt: Date.now() };
+  }
+  saveHighlights(map);
+  return Object.prototype.hasOwnProperty.call(map, key);
+}
+
+function renderMarkToggle(key, payload) {
+  const marked = isHighlighted(key);
+  const payloadAttr = payload ? ` data-payload='${JSON.stringify(payload).replace(/'/g, "&#39;")}'` : "";
+  return `
+    <button type="button" class="mark-toggle" data-key="${escapeHtml(key)}"${payloadAttr}
+      aria-pressed="${marked}" aria-label="${marked ? "Remover destaque" : "Marcar como importante"}">
+      <span class="mark-dot" aria-hidden="true"></span>${marked ? "Marcado" : "Marcar"}
+    </button>
+  `;
+}
+
+function initMarkToggles(root, onToggle) {
+  (root || document).querySelectorAll(".mark-toggle[data-key]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      let payload = null;
+      if (btn.dataset.payload) {
+        try { payload = JSON.parse(btn.dataset.payload); } catch {}
+      }
+      const nowMarked = toggleHighlight(key, payload);
+      btn.setAttribute("aria-pressed", String(nowMarked));
+      btn.setAttribute("aria-label", nowMarked ? "Remover destaque" : "Marcar como importante");
+      btn.innerHTML = `<span class="mark-dot" aria-hidden="true"></span>${nowMarked ? "Marcado" : "Marcar"}`;
+      if (onToggle) onToggle(key, nowMarked, btn);
+    });
+  });
+}
+
 function populatedCategories(secoes) {
   return SECTIONS
     .map((meta) => ({ ...meta, items: (secoes && secoes[meta.key]) || [] }))
@@ -138,12 +199,20 @@ function initActiveSection(ids) {
   });
 }
 
-function renderItem(item) {
+function renderItem(item, ctx) {
   const alta = item.relevancia === "alta";
   const mark = alta
     ? `<span class="relevance-mark" aria-label="Relevância alta"><span class="relevance-dot"></span></span>`
     : "";
   const tipo = item.tipo ? `<span class="label">${escapeHtml(item.tipo.replace(/_/g, " "))}</span>` : "";
+  const toggle = ctx
+    ? renderMarkToggle(highlightKey(ctx.data, ctx.catKey, item.titulo), {
+        data: ctx.data,
+        catKey: ctx.catKey,
+        catLabel: ctx.catLabel,
+        item,
+      })
+    : "";
   const comparados = item.modelos_comparados && item.modelos_comparados.length
     ? `<div class="item-models">${item.modelos_comparados
         .map((m, i) => `${i > 0 ? '<span class="sep">/</span>' : ""}<span class="model-name">${escapeHtml(m)}</span>`)
@@ -163,6 +232,7 @@ function renderItem(item) {
         <div class="item-heading-row">
           <h3 class="item-title">${escapeHtml(item.titulo)}</h3>
           ${tipo}
+          ${toggle}
         </div>
         <p class="item-summary">${escapeHtml(item.resumo)}</p>
         ${extra}
@@ -172,13 +242,14 @@ function renderItem(item) {
   `;
 }
 
-function renderCategoriesWithPause(cats) {
+function renderCategoriesWithPause(cats, data) {
   const pauseAt = Math.ceil(cats.length / 2);
   let html = "";
   cats.forEach((c, i) => {
     if (i === pauseAt && cats.length > 3) {
       html += `<div class="pause-divider"><span class="rule-line"></span><span class="label">metade do dia</span><span class="rule-line"></span></div>`;
     }
+    const ctx = { data, catKey: c.key, catLabel: c.label };
     html += `
       <section id="${c.key}" class="category-section" style="--i:${i}">
         <div class="category-head">
@@ -186,7 +257,7 @@ function renderCategoriesWithPause(cats) {
           <h2 class="category-title">${escapeHtml(c.label)}</h2>
           <span class="label cat-count">${c.items.length}</span>
         </div>
-        <div class="item-list">${c.items.map(renderItem).join("")}</div>
+        <div class="item-list">${c.items.map((it) => renderItem(it, ctx)).join("")}</div>
       </section>
     `;
   });
@@ -233,11 +304,12 @@ function renderDigest(day, container) {
       ${renderRail(cats)}
       <div class="col-main">
         ${renderMasthead(day)}
-        ${renderCategoriesWithPause(cats)}
+        ${renderCategoriesWithPause(cats, day.data)}
         ${renderTerms(day.glossario_do_dia)}
         ${renderDeepen(day.para_aprofundar)}
       </div>
     </div>
   `;
   initActiveSection(cats.map((c) => c.key));
+  initMarkToggles(container);
 }

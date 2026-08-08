@@ -185,6 +185,30 @@ nav.site-nav a.active {
 }
 .toggle-dot.is-filled { background: currentColor; }
 
+/* ---------- Mark toggle (Destaques) ---------- */
+
+.mark-toggle {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: 5px 11px 5px 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin-left: auto;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.mark-toggle:hover { border-color: var(--rule-strong); color: var(--ink-soft); }
+.mark-dot { width: 6px; height: 6px; border-radius: 50%; border: 1px solid currentColor; flex-shrink: 0; }
+.mark-toggle[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.mark-toggle[aria-pressed="true"] .mark-dot { background: currentColor; }
+
 /* ---------- Layout grid ---------- */
 
 .wrap {
@@ -483,6 +507,24 @@ nav.site-nav a.active {
   line-height: 1.6;
 }
 
+/* ---------- Destaques ---------- */
+
+.page-lead {
+  margin: 10px 0 0;
+  max-width: 46rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.destaque-list { margin-top: 30px; }
+.destaque-item { padding: 24px 0; border-bottom: 1px solid var(--rule); }
+.destaque-list .destaque-item:first-child { padding-top: 0; }
+.destaque-list .destaque-item:last-child { border-bottom: none; }
+.destaque-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-bottom: 10px; }
+.destaque-meta a.label { text-decoration: underline; text-decoration-color: var(--rule-strong); text-underline-offset: 3px; }
+.destaque-meta .mark-toggle { margin-left: auto; }
+
 /* ---------- Categoria filter ---------- */
 
 .select-label {
@@ -553,6 +595,7 @@ footer.site-footer {
 @media (pointer: coarse) {
   nav.site-nav a { padding: 13px 2px; }
   #theme-toggle { padding: 13px 16px 13px 14px; }
+  .mark-toggle { padding: 12px 15px 12px 12px; }
   .chip { padding: 12px 18px; }
   .chips { gap: 12px; }
 }

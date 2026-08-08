@@ -29,8 +29,8 @@ Daily flow: Hermes runs once a day, writes `data/AAAA-MM-DD.json`, updates `inde
 ## Capabilities and Constraints
 
 - 100% static: no backend, no SSR, no serverless functions, no dynamic server routes (GitHub Pages constraint).
-- Data is read-only from the site's perspective; only Hermes writes JSON.
-- No authentication, no accounts, no write actions of any kind.
+- Data is read-only from the site's perspective; only Hermes writes JSON. The one exception is purely client-side: marking an item as a "destaque" writes to `localStorage` in Gabriel's own browser, never back to the JSON files or any server — still no backend, no accounts, no cross-device sync.
+- No authentication, no accounts, no server-side write actions of any kind.
 - Client-side routing/links must use relative paths (site lives under a GitHub Pages subpath, not domain root).
 - Categories are fixed by the Hermes schema: modelos, ferramentas_plugins_mcps, open_source, discussoes, papers, mercado, regulacao, integracoes_novas, dicas_economia_e_performance, dicas_programadores, delphi_e_ia, comparativos_modelos.
 - Must degrade gracefully when a section is empty or a whole day file is missing/malformed.
